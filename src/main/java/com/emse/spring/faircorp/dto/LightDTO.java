@@ -3,6 +3,8 @@ package com.emse.spring.faircorp.dto;
 import com.emse.spring.faircorp.model.Status;
 import com.emse.spring.faircorp.model.light.Light;
 import com.emse.spring.faircorp.model.room.Room;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 
 public class LightDTO {
     private  Long id;
