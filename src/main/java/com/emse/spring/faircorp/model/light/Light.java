@@ -16,8 +16,12 @@ public class Light {
     private Integer level;
 
     @Column(nullable = false)
+    private Integer color;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
+
 
     @ManyToOne
     private Room room;
@@ -58,5 +62,13 @@ public class Light {
 
     public Room getRoom() {
         return room;
+    }
+
+    public Integer getColor() {
+        return color;
+    }
+
+    public void setColor(Integer color) {
+        this.color = color;
     }
 }

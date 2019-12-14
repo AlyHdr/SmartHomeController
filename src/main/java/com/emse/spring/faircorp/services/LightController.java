@@ -64,13 +64,20 @@ public class LightController {
 
         return new LightDTO(light);
     }
-    @PostMapping(path = "/{id}/hue")
-    public LightDTO changeHue(@PathVariable Long id,@RequestBody LightDTO lightDTO){
+    @PostMapping(path = "/{id}/bri")
+    public LightDTO changeBri(@PathVariable Long id,@RequestBody LightDTO lightDTO){
         int level = lightDTO.getLevel();
         Light light = lightDao.findById(id).orElseThrow(IllegalArgumentException::new);
         light.setLevel(level);
         return new LightDTO(light);
+    }
 
+    @PostMapping(path = "/{id}/hue")
+    public LightDTO changeHue(@PathVariable Long id,@RequestBody LightDTO lightDTO){
+        int color = lightDTO.getColor();
+        Light light = lightDao.findById(id).orElseThrow(IllegalArgumentException::new);
+        light.setColor(color);
+        return new LightDTO(light);
     }
     @DeleteMapping(path = "/{id}")
     public void delete(@PathVariable Long id) {
