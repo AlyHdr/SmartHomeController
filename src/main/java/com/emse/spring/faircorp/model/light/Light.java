@@ -30,9 +30,10 @@ public class Light {
 
     }
 
-    public Light(Integer level, Status status,Room room) {
+    public Light(Integer level,Integer color, Status status,Room room) {
         this.level = level;
         this.status = status;
+        this.color = color;
         this.room = room;
     }
 
