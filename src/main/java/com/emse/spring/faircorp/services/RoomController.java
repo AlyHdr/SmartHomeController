@@ -60,14 +60,28 @@ public class RoomController {
         }
         roomDao.deleteById(id);
     }
-    @PutMapping(path = "/{id}/switch")
-    public List<LightDTO> switchStatus(@PathVariable Long id) {
+    @PutMapping(path = "/{id}/switch-on")
+    public List<LightDTO> switchStatusOn(@PathVariable Long id) {
         RoomDTO roomDTO = findById(id);
         ArrayList<LightDTO> list_light_dto = new ArrayList<>();
         for(LightDTO lightDTO:roomDTO.getLights()){
             Light light = lightDao.findById(lightDTO.getId()).orElseThrow(IllegalArgumentException::new);
 
-            light.setStatus(light.getStatus() == Status.ON ? Status.OFF : Status.ON);
+            light.setStatus(Status.ON);
+            list_light_dto.add(new LightDTO(light));
+        }
+
+        return list_light_dto;
+    }
+
+    @PutMapping(path = "/{id}/switch-off")
+    public List<LightDTO> switchStatusOff(@PathVariable Long id) {
+        RoomDTO roomDTO = findById(id);
+        ArrayList<LightDTO> list_light_dto = new ArrayList<>();
+        for(LightDTO lightDTO:roomDTO.getLights()){
+            Light light = lightDao.findById(lightDTO.getId()).orElseThrow(IllegalArgumentException::new);
+
+            light.setStatus(Status.OFF);
             list_light_dto.add(new LightDTO(light));
         }
 
