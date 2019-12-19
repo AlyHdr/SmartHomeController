@@ -5,6 +5,7 @@ import com.emse.spring.faircorp.model.Status;
 import com.emse.spring.faircorp.model.light.Light;
 import com.emse.spring.faircorp.model.light.LightDao;
 import com.emse.spring.faircorp.model.room.RoomDao;
+import com.emse.spring.faircorp.mqtt.MqttController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,8 @@ public class LightController {
     @Autowired
     private RoomDao roomDao;
 
+    @Autowired
+    private MqttController mqttController;
 
     @GetMapping // 5.
     public List<LightDTO> findAll() {
@@ -44,6 +47,7 @@ public class LightController {
     public LightDTO switchStatus(@PathVariable Long id) {
         Light light = lightDao.findById(id).orElseThrow(IllegalArgumentException::new);
         light.setStatus(light.getStatus() == Status.ON ? Status.OFF : Status.ON);
+        mqttController.publish();
         return new LightDTO(light);
     }
 
