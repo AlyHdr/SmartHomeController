@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Radial Color Picker - Vue</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"><link rel='stylesheet' href='https://unpkg.com/@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css'><link rel="stylesheet" href="./style.css">
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div id="app">
+    <color-picker v-bind="color" @input="onInput"></color-picker>
+    <h1 v-text="msg"></h1>
+    
+    {{hue}}
+    {{saturation}}
+    {{luminosity}}
+   <button id="button" v-on:click="changeColor" >Choose</button>
+</div>
+<!-- partial -->
+  <script src='https://unpkg.com/vue'></script>
+<script src='https://unpkg.com/@radial-color-picker/vue-color-picker/dist/vue-color-picker.umd.min.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>
