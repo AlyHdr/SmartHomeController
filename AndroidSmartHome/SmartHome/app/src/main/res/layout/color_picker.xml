@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+<!--    <com.rarepebble.colorpicker.ColorPickerView-->
+<!--        android:id="@+id/colorPicker"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:colorpicker_showAlpha="false"-->
+<!--        app:colorpicker_showHex="true"-->
+<!--        app:colorpicker_showPreview="true"-->
+<!--        />-->
+
+<!--    <com.flask.colorpicker.ColorPickerView-->
+<!--        android:id="@+id/color_picker_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:alphaSlider="true"-->
+<!--        app:density="12"-->
+<!--        app:lightnessSlider="true"-->
+<!--        app:wheelType="FLOWER"-->
+<!--        app:lightnessSliderView="@+id/v_lightness_slider"-->
+<!--        app:alphaSliderView="@+id/v_alpha_slider"-->
+<!--        />-->
+
+<!--    <com.flask.colorpicker.slider.LightnessSlider-->
+<!--        android:id="@+id/v_lightness_slider"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="48dp"-->
+<!--        />-->
+
+<!--    <com.flask.colorpicker.slider.AlphaSlider-->
+<!--        android:id="@+id/v_alpha_slider"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="48dp"-->
+<!--        />-->
+    <com.azeesoft.lib.colorpicker.HuePicker
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:id="@+id/hueBar"
+        android:indeterminate="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:progress="1"
+        android:background="@drawable/transparent"
+        android:indeterminateOnly="false"
+        android:minHeight="25dp"
+        android:maxHeight="25dp"
+        android:splitTrack="false"
+        android:progressDrawable="@drawable/transparent"
+        android:thumb="@drawable/slider_thumb"
+        android:max="65535"
+        tools:ignore="UnusedAttribute"
+        android:layout_marginTop="10dp" />
+
+</LinearLayout>
