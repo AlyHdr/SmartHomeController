@@ -7,6 +7,7 @@ import com.emse.spring.faircorp.model.light.Light;
 import com.emse.spring.faircorp.model.light.LightDao;
 import com.emse.spring.faircorp.model.room.Room;
 import com.emse.spring.faircorp.model.room.RoomDao;
+import com.emse.spring.faircorp.mqtt.MqttController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,10 @@ public class RoomController {
     private LightDao lightDao;
     @Autowired
     private RoomDao roomDao;
+
+    @Autowired
+    private MqttController mqttController;
+
     @GetMapping // 5.
     public List<RoomDTO> findAll() {
         return roomDao.findAll()
@@ -45,7 +50,7 @@ public class RoomController {
             room.setFloor(dto.getFloor());
             roomDao.save(room);
         }
-
+        mqttController.publish("createRoom","Name: "+room.getName()+" Floor: "+room.getFloor());
         return new RoomDTO(room);
     }
     @GetMapping(path = "/{id}")

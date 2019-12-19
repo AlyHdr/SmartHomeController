@@ -47,7 +47,7 @@ public class LightController {
     public LightDTO switchStatus(@PathVariable Long id) {
         Light light = lightDao.findById(id).orElseThrow(IllegalArgumentException::new);
         light.setStatus(light.getStatus() == Status.ON ? Status.OFF : Status.ON);
-        mqttController.publish();
+        mqttController.publish("switch",light.getId()+"");
         return new LightDTO(light);
     }
 
@@ -65,7 +65,6 @@ public class LightController {
             light.setStatus(dto.getStatus());
             lightDao.save(light);
         }
-
         return new LightDTO(light);
     }
     @PostMapping(path = "/{id}/bri")
@@ -81,6 +80,7 @@ public class LightController {
         int color = lightDTO.getColor();
         Light light = lightDao.findById(id).orElseThrow(IllegalArgumentException::new);
         light.setColor(color);
+        mqttController.publish("hue","Light: "+light.getId()+"Hue: "+light.getColor()+"");
         return new LightDTO(light);
     }
     @DeleteMapping(path = "/{id}")

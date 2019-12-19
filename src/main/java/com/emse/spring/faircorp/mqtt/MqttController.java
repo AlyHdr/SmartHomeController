@@ -24,6 +24,7 @@ public class MqttController {
         {
             mqttClient = new MqttClient("tcp://" + hostname + ":" + port, clientId);
             mqttClient.connect(mqttConnectOptions());
+            subscribe("ahmad");
         }
         catch (Exception e)
         {
@@ -39,17 +40,15 @@ public class MqttController {
         return mqttConnectOptions;
     }
 
-    public void publish()
+    public void publish(String topic,String payload)
     {
-        String topic="test";
-        String payload="This is a test";
-        boolean retained=true;
+//        boolean retained=true;
         try
         {
             MqttMessage mqttMessage = new MqttMessage();
             mqttMessage.setPayload(payload.getBytes());
 //            mqttMessage.setQos(qos);
-            mqttMessage.setRetained(retained);
+//            mqttMessage.setRetained(retained);
             mqttClient.publish(topic, mqttMessage);
         }
         catch (Exception e)
@@ -58,21 +57,22 @@ public class MqttController {
         }
     }
 
-//    public void subscribe(final String topic){
-//        try
-//        {
-//            System.out.println("Messages received:");
-//            mqttClient.subscribeWithResponse(topic, new IMqttMessageListener() {
-//                @Override
-//                public void messageArrived(String topic, MqttMessage message)
-//                {
-//                    System.out.println(message.getId() + " -> " + new String(message.getPayload()));
-//                }
-//            });
-//        }
-//        catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//    }
+    public void subscribe(final String topic){
+        try
+        {
+            System.out.println("Messages received:");
+            mqttClient.subscribeWithResponse(topic, new IMqttMessageListener() {
+                @Override
+                public void messageArrived(String topic, MqttMessage message)
+                {
+                    System.out.println(message.getId() + " -> " + new String(message.getPayload()));
+
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 }
