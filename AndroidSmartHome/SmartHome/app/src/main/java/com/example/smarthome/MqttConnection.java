@@ -38,7 +38,7 @@ public class MqttConnection {
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    subscribe("light");
+                    subscribe("a_a_m_light");
                 }
 
                 @Override

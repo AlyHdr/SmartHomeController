@@ -97,7 +97,7 @@ public class LightController {
     {
         JSONObject object=new JSONObject();
         object.put("id",light.getId());
-        object.put("room",light.getRoom());
+        object.put("room",light.getRoom().getId());
         JSONObject properties=new JSONObject();
 
         properties.put("on",true);
