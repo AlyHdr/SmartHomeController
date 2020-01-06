@@ -29,7 +29,7 @@ public class Light {
 
     }
 
-    public Light(long id,Integer level,Integer color, Status status,Room room) {
+    public Light(Long id,Integer level,Integer color, Status status,Room room) {
         this.id=id;
         this.level = level;
         this.status = status;

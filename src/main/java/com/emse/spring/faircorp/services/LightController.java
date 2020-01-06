@@ -46,6 +46,7 @@ public class LightController {
 
     @PutMapping(path = "/{id}/switch")
     public LightDTO switchStatus(@PathVariable Long id) {
+        System.out.println("ID: ============================= "+id);
         Light light = lightDao.findById(id).orElseThrow(IllegalArgumentException::new);
         light.setStatus(light.getStatus() == Status.ON ? Status.OFF : Status.ON);
         String message=createMqttMessage(light);

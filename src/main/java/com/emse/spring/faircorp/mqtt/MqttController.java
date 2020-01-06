@@ -42,13 +42,11 @@ public class MqttController {
 
     public void publish(String topic,String payload)
     {
-//        boolean retained=true;
         try
         {
             MqttMessage mqttMessage = new MqttMessage();
             mqttMessage.setPayload(payload.getBytes());
 //            mqttMessage.setQos(qos);
-//            mqttMessage.setRetained(retained);
             mqttClient.publish(topic, mqttMessage);
         }
         catch (Exception e)
