@@ -6,6 +6,7 @@ import com.emse.spring.faircorp.model.light.Light;
 import com.emse.spring.faircorp.model.light.LightDao;
 import com.emse.spring.faircorp.model.room.RoomDao;
 import com.emse.spring.faircorp.mqtt.MqttController;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +48,8 @@ public class LightController {
     public LightDTO switchStatus(@PathVariable Long id) {
         Light light = lightDao.findById(id).orElseThrow(IllegalArgumentException::new);
         light.setStatus(light.getStatus() == Status.ON ? Status.OFF : Status.ON);
-        mqttController.publish("switch",light.getId()+"");
+        String message=createMqttMessage(light);
+        mqttController.publish("a_a_m_light",message);
         return new LightDTO(light);
     }
 
@@ -72,6 +74,8 @@ public class LightController {
         int level = lightDTO.getLevel();
         Light light = lightDao.findById(id).orElseThrow(IllegalArgumentException::new);
         light.setLevel(level);
+        String message=createMqttMessage(light);
+        mqttController.publish("a_a_m_light",message);
         return new LightDTO(light);
     }
 
@@ -80,11 +84,30 @@ public class LightController {
         int color = lightDTO.getColor();
         Light light = lightDao.findById(id).orElseThrow(IllegalArgumentException::new);
         light.setColor(color);
-        mqttController.publish("hue","Light: "+light.getId()+"Hue: "+light.getColor()+"");
+        String message=createMqttMessage(light);
+        mqttController.publish("a_a_m_light",message);
         return new LightDTO(light);
     }
     @DeleteMapping(path = "/{id}")
     public void delete(@PathVariable Long id) {
         lightDao.deleteById(id);
+    }
+
+    private String createMqttMessage (Light light)
+    {
+        JSONObject object=new JSONObject();
+        object.put("id",light.getId());
+        object.put("room",light.getRoom());
+        JSONObject properties=new JSONObject();
+
+        properties.put("on",true);
+        if(light.getStatus().equals(Status.OFF))
+            properties.put("on",false);
+        properties.put("bri",light.getLevel());
+        properties.put("hue",light.getColor());
+
+        object.put("properties",properties);
+        System.out.println(object.toString());
+        return object.toString();
     }
 }

@@ -12,6 +12,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+
 import java.util.ArrayList;
 
 public class RoomActivity extends AppCompatActivity implements RoomContextStateListener {
@@ -39,15 +41,29 @@ public class RoomActivity extends AppCompatActivity implements RoomContextStateL
     }
 
     @Override
-    public void updateView(Room room) {
+    public void updateView(ArrayList<Room> rooms) {
+        Room room=rooms.get(0);
         ListView listView=findViewById(R.id.sensorsListView);
         ArrayList<Light> list=room.getLights();
         RoomAdapter roomAdapter=new RoomAdapter(this,list,manager);
         listView.setAdapter(roomAdapter);
     }
 
+    @Override
+    public void updateView(Room rooms) {
+
+    }
+
     public void addLight(View view) {
         Light light = new Light("4", 100, true, 5000, room);
         manager.addLight(light);
+    }
+
+    @Override
+    protected void onDestroy() {
+        MqttAndroidClient client =manager.getMqttConnection().getAndroidClient();
+        client.unregisterResources();
+        client.close();
+        super.onDestroy();
     }
 }

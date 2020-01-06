@@ -1,15 +1,6 @@
 package com.example.smarthome;
-
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AlertDialog;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -18,31 +9,24 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.azeesoft.lib.colorpicker.HuePicker;
-
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class HttpManager {
     final private String apiRoomsURL = "https://alyhdr.cleverapps.io/api/rooms/";
     final private String apiLightsURL = "https://alyhdr.cleverapps.io/api/lights/";
-
+    MqttConnection mqttConnection;
     RequestQueue queue;
     ArrayList<RoomContextStateListener> listeners;
-    //    ArrayList<RoomContextStateListener> managerListeners=new ArrayList<>();
     Context context;
+
 
     public HttpManager(Context context) {
         this.context = context;
         queue = Volley.newRequestQueue(context);
         listeners = new ArrayList<>();
+        mqttConnection=new MqttConnection(context, this);
     }
 
     public void addListener(RoomContextStateListener activity) {
@@ -59,7 +43,18 @@ public class HttpManager {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                retrieveRoomContextState(light.getRoom().getId());
+                                try {
+                                    retrieveRoomContextState(light.getRoom().getId());
+                                    JSONObject object = new JSONObject();
+                                    object.put("id", light.getId());
+                                    object.put("room",light.getRoom().getId());
+                                    String objectString=object.toString();
+//                                    mqttConnection.publish("light", objectString);
+                                }
+                                catch (Exception e)
+                                {
+                                    e.printStackTrace();
+                                }
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -103,7 +98,6 @@ public class HttpManager {
                                 Light light = new Light(lightId, lightLevel, isOn, color, room);
                                 room.addLight(light);
                             }
-
                             for (RoomContextStateListener listener : listeners) {
                                 listener.updateView(room);
                             }
@@ -135,9 +129,12 @@ public class HttpManager {
                         Room room = new Room(id, name, floor);
                         listOfRooms.add(room);
                     }
-                    if (context instanceof MainActivity) {
-                        MainActivity mainActivity = (MainActivity) context;
-                        mainActivity.showRooms(listOfRooms);
+//                    if (context instanceof MainActivity) {
+//                        MainActivity mainActivity = (MainActivity) context;
+//                        mainActivity.showRooms(listOfRooms);
+//                    }
+                    for (RoomContextStateListener listener : listeners) {
+                        listener.updateView(listOfRooms);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -185,6 +182,7 @@ public class HttpManager {
                         @Override
                         public void onResponse(JSONObject response) {
                             retrieveRoomContextState(light.getRoom().getId());
+                            publishMQTT(light);
 //                            Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
                         }
                     },
@@ -204,7 +202,22 @@ public class HttpManager {
             e.printStackTrace();
         }
     }
-    public void changeBrightness(Light light, final int brightnessValue)
+
+    private void publishMQTT(Light light) {
+        try {
+            JSONObject object = new JSONObject();
+            object.put("id", light.getId());
+            object.put("room",light.getRoom().getId());
+            String objectString=object.toString();
+//            mqttConnection.publish("light", objectString);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void changeBrightness(final Light light, final int brightnessValue)
     {
         try
         {
@@ -217,6 +230,7 @@ public class HttpManager {
                         @Override
                         public void onResponse(JSONObject response) {
                             Toast.makeText(context, "Done", Toast.LENGTH_SHORT).show();
+                            publishMQTT(light);
                         }
                     },
                     new Response.ErrorListener()
@@ -334,4 +348,7 @@ public class HttpManager {
         }
     }
 
+    public MqttConnection getMqttConnection() {
+        return mqttConnection;
+    }
 }

@@ -37,7 +37,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hello"
-            android:textSize="9dp"
             android:layout_gravity="center"/>
         <ImageView
             android:id="@+id/imageSensor"
@@ -49,7 +48,9 @@
             android:id="@+id/seekBarBrightness"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="254"/>
+            android:max="254"
+            android:thumbTint="#660000"
+            />
         <TextView
             android:id="@+id/textViewSeekBarBrightnessValue"
             android:layout_width="wrap_content"
@@ -91,13 +92,15 @@
                 android:id="@+id/radioButtonOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ON">
+                android:text="ON"
+                android:buttonTint="#cc0000">
             </RadioButton>
             <RadioButton
                 android:id="@+id/radioButtonOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="OFF">
+                android:text="OFF"
+                android:buttonTint="#cc0000">
             </RadioButton>
 
         </RadioGroup>
