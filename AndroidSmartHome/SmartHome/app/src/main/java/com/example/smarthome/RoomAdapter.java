@@ -3,7 +3,10 @@ package com.example.smarthome;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +23,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 
 import com.azeesoft.lib.colorpicker.HuePicker;
@@ -32,6 +37,7 @@ import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.flask.colorpicker.slider.AlphaSlider;
 import com.flask.colorpicker.slider.LightnessSlider;
 
+import java.nio.channels.Selector;
 import java.util.List;
 
 //import top.defaults.colorpicker.ColorPickerView;
@@ -47,6 +53,7 @@ public class RoomAdapter extends ArrayAdapter<Light> {
         this.manager=manager;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -58,13 +65,12 @@ public class RoomAdapter extends ArrayAdapter<Light> {
 
         if(lights.size()!=0)
         {
-//            Toast.makeText(context, "Updating room", Toast.LENGTH_SHORT).show();
+            listItem.setBackground(ContextCompat.getDrawable(context,R.drawable.listview_background));
+
+
             final Light currentLight = lights.get(position);
             listItem.setTag(currentLight);
             Button buttonDelete=listItem.findViewById(R.id.linearLayoutButtons).findViewById(R.id.buttonDelete);
-
-//            Button buttonSetTheme=listItem.findViewById(R.id.linearLayoutButtons).findViewById(R.id.buttonSetTheme);
-
             ImageView image = listItem.findViewById(R.id.imageSensor);
             LinearLayout linearLayoutSensorOptions = listItem.findViewById(R.id.linearLayoutSensorOptions);
             LinearLayout linearLayoutLamp=listItem.findViewById(R.id.linearLayoutLamp);
@@ -88,18 +94,11 @@ public class RoomAdapter extends ArrayAdapter<Light> {
             SeekBar seekBarBrightness = linearLayoutLamp.findViewById(R.id.seekBarBrightness);
             seekBarBrightness.setProgress(currentLight.getLevel());
 
-//            SeekBar seekBarColor=linearLayoutSensorOptions.findViewById(R.id.seekBarHue);
-//            seekBarColor.setProgress(currentLight.getColor());
-
             View rectangle=linearLayoutSensorOptions.findViewById(R.id.rectangleColor);
             float hsv[]=new float[3];
             hsv[0]=(currentLight.getColor()*360)/65535;
-//            hsv[1]=(float)(currentLight.getLevel()/(254*1.0));
             hsv[1]=1;
             hsv[2]=1;
-
-//            System.out.println("HSV RECTangle: {"+hsv[0]+","+hsv[1]+","+hsv[2]+"}");
-//            Toast.makeText(context, "Here", Toast.LENGTH_SHORT).show();
 
             int color = Color.HSVToColor(hsv);
             GradientDrawable bgShape = (GradientDrawable)rectangle.getBackground();

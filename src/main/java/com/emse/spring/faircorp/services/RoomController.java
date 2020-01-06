@@ -50,7 +50,7 @@ public class RoomController {
             room.setFloor(dto.getFloor());
             roomDao.save(room);
         }
-        mqttController.publish("createRoom","Name: "+room.getName()+" Floor: "+room.getFloor());
+//        mqttController.publish("createRoom","Name: "+room.getName()+" Floor: "+room.getFloor());
         return new RoomDTO(room);
     }
     @GetMapping(path = "/{id}")
