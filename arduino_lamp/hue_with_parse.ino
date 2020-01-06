@@ -13,7 +13,7 @@ MQTTClient mqtt_client ;
 #define BUTTON_PIN 2 // TODO: uncomment this line if the potentiometer is connected to digital pin 3, or adapt...
 
 String ID = "999" ;
-String LIGHT_ID = "14";
+String LIGHT_ID = "16";
 // TODO: you probably need to add a line here for the button pin.... 
 
 
@@ -44,9 +44,14 @@ void setup() {
   delay(100) ;
   Serial.println("Initializing...\n") ;
 
-  //WiFi.begin(wifi_ssid, wifi_password) ;
+//  WiFi.begin(wifi_ssid, wifi_password) ;
   mqtt_client.begin(mqtt_host, mqtt_port, client) ;
-  mqtt_client.onMessage(callback);
+
+//  WiFi.begin(wifi_ssid, wifi_password) ;
+//  mqtt_client.begin(mqtt_host, client) ;
+//  mqtt_client.onMessage(callback) ;
+
+  Serial.println("mqtt");
   connect();
   // initialize the Potentiometer and button pin as inputs:
   pinMode(POTENTIOMETER_PIN, INPUT);
@@ -62,6 +67,11 @@ void loop() {
   if(status != WL_CONNECTED){
     connect();
   }
+  mqtt_client.loop() ;
+  if ( ! mqtt_client.connected() ) {
+    Serial.println("MQTT NOOOO");
+    mqtt_client.connect("", mqtt_user, mqtt_password);
+  }
   t = millis() ;
   if ( (t - t0) >= DELTA_T ) {
     t0 = t ;
@@ -72,11 +82,11 @@ void loop() {
      potentiometerValue = analogRead(POTENTIOMETER_PIN); // TODO; uncomment this line if it is analog
 
     
-   Serial.print("potentiometer value: ");
-    Serial.print(potentiometerValue);
-  
-    Serial.print(" button value: ");
-    Serial.println(buttonState);
+//   Serial.print("potentiometer value: ");
+//    Serial.print(potentiometerValue);
+//  
+//    Serial.print(" button value: ");
+//    Serial.println(buttonState);
   
     if(oldValue <= (potentiometerValue - 10) || oldValue >= (potentiometerValue + 10)){
       String briSt = String(potentiometerValue);
@@ -219,15 +229,18 @@ void connect() {
   Serial.print(mqtt_port) ;
   Serial.println(" ...") ;
 
-  while ( !mqtt_client.connect(ID.c_str(), mqtt_user, mqtt_password) ) {
-    digitalWrite(LED_BUILTIN, HIGH) ;
-    delay(500);
-    digitalWrite(LED_BUILTIN, LOW) ;
-    Serial.print(".");
-    delay(500);
+  while ( !mqtt_client.connect("", mqtt_user, mqtt_password) ) {
+//    digitalWrite(LED_BUILTIN, HIGH) ;
+//    delay(500);
+//    digitalWrite(LED_BUILTIN, LOW) ;
+//    Serial.print(".");
+//    delay(500);
+      Serial.println("connnn");
   }
   Serial.println("MQTT: connected") ;
+  mqtt_client.publish(String("ahmad").c_str(), "myriam") ;
   mqtt_client.subscribe("test");
+//  mqtt_client.onMessage(callback);
   Serial.print("\n");
   Serial.print("WiFi connected\n");
   Serial.print("IP address: \n");
@@ -239,5 +252,7 @@ void callback(String &intopic, String &payload)
   /* There's nothing to do here ... as long as the module
    *  cannot handle messages.
    */
+//   mqtt_client.publish(String("ahmad").c_str(), "incall") ;
+   Serial.print("received");
   Serial.println("incoming: " + intopic + " - " + payload);
 }
