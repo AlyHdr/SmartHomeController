@@ -54,6 +54,11 @@ public class RoomActivity extends AppCompatActivity implements RoomContextStateL
 
     }
 
+    @Override
+    public void updateLight(Light light) {
+
+    }
+
     public void addLight(View view) {
         Light light = new Light("4", 100, true, 5000, room);
         manager.addLight(light);

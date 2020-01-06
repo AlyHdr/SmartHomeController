@@ -24,6 +24,14 @@ public class Light {
         this.room = room;
 
     }
+    public Light(String id, int level, boolean on, int color) {
+        this.id = id;
+        this.level=level;
+        this.on=on;
+        this.color=color;
+        this.room = room;
+
+    }
 
     public String getId() {
         return id;
