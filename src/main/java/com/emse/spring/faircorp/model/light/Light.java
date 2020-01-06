@@ -9,7 +9,6 @@ import javax.persistence.*;
 public class Light {
 
     @Id
-    @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
@@ -30,7 +29,8 @@ public class Light {
 
     }
 
-    public Light(Integer level,Integer color, Status status,Room room) {
+    public Light(long id,Integer level,Integer color, Status status,Room room) {
+        this.id=id;
         this.level = level;
         this.status = status;
         this.color = color;

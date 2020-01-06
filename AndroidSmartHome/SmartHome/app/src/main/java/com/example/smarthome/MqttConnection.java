@@ -115,7 +115,7 @@ public class MqttConnection {
             JSONObject jsonObject=new JSONObject(message);
             String id=jsonObject.getString("id");
             String room=jsonObject.getString("room");
-            Toast.makeText(context, "Recieved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Room "+room, Toast.LENGTH_SHORT).show();
             httpManager.retrieveRoomContextState(room);
 //            JSONObject properties=jsonObject.getJSONObject("properties");
 //            Iterator<String> iterator=properties.keys();
