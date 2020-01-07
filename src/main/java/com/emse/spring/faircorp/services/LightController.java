@@ -69,6 +69,8 @@ public class LightController {
             light.setStatus(dto.getStatus());
             lightDao.save(light);
         }
+        String message=createMqttMessage(light);
+        mqttController.publish("a_a_m_light",message);
         return new LightDTO(light);
     }
     @PostMapping(path = "/{id}/bri")
