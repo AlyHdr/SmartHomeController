@@ -112,10 +112,20 @@ public class MqttConnection {
         try
         {
             String message=mqttMessage.toString();
+            System.out.println(message);
             JSONObject jsonObject=new JSONObject(message);
-            String id=jsonObject.getString("id");
+            String lightId=jsonObject.getString("id");
             String room=jsonObject.getString("room");
-            Toast.makeText(context, "Room "+room, Toast.LENGTH_SHORT).show();
+            JSONObject properties=jsonObject.getJSONObject("properties");
+
+            int lightLevel= Integer.valueOf(properties.getString("bri"));
+            int color=Integer.valueOf(properties.getString("hue"));
+            String status=properties.getString("on");
+            boolean isOn=false;
+            if(status.equals("ON"))
+                isOn=true;
+
+            Light light = new Light(lightId, lightLevel, isOn, color);
             httpManager.retrieveRoomContextState(room);
 //            JSONObject properties=jsonObject.getJSONObject("properties");
 //            Iterator<String> iterator=properties.keys();

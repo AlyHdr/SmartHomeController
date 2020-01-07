@@ -115,6 +115,13 @@ public class HttpManager {
         queue.add(request);
     }
 
+    public void retrieveLightContextState(Light light)
+    {
+        for (RoomContextStateListener listener : listeners) {
+            listener.updateLight(light);
+        }
+    }
+
     public void retrieveRooms() {
         final ArrayList<Room> listOfRooms = new ArrayList<>();
         String urlRooms = apiRoomsURL;
@@ -129,10 +136,6 @@ public class HttpManager {
                         Room room = new Room(id, name, floor);
                         listOfRooms.add(room);
                     }
-//                    if (context instanceof MainActivity) {
-//                        MainActivity mainActivity = (MainActivity) context;
-//                        mainActivity.showRooms(listOfRooms);
-//                    }
                     for (RoomContextStateListener listener : listeners) {
                         listener.updateView(listOfRooms);
                     }

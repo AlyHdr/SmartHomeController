@@ -379,11 +379,13 @@
         },
             methods: {
                 onInput: function(hue) {
+                  //console.log(hue)
                     this.color.hue = hue;
                     this.hue=hue*182;
                 },
                 changeColor:function () {
                   a.light.color = this.hue
+                  console.log('the light is: '+this.hue)
                     let post_url= "https://alyhdr.cleverapps.io/api/lights/"+a.light_id+"/hue";
                       axios.post(post_url,{
                         color:this.hue
@@ -448,13 +450,16 @@ function initListenerRoomController(arr){
             const { value: formValues } = await Swal.fire({
               title: 'Add Light Form',
               html:
+                '<p>Lamp ID: <input id="lamp_id" class="swal2-input "></p>'+
                 'level:  <input id="light_level" class="swal2-input">' +
-                '<p>color: <input id="color_value" class="swal2-input "></p>',
+                '<p>color: <input id="color_value" class="swal2-input "></p>'
+                ,
               focusConfirm: false,
               preConfirm: () => {
                 return {
                   "color_value": document.getElementById('color_value').value,
                   "light_level" :document.getElementById('light_level').value,
+                  "lamp_id": document.getElementById('lamp_id').value
                 }
               }
             })
@@ -497,7 +502,7 @@ function initListenerRoomController(arr){
                 if(formValues.light_level < 1){
                   alert('not allowed')
                 }
-                var payload='{"color": '+formValues.color_value+',"level": '+formValues.light_level+', "roomId": '+controller.room_id+', "status": "OFF"}';
+                var payload='{"id":'+formValues.lamp_id+', "color": '+formValues.color_value+',"level": '+formValues.light_level+', "roomId": '+controller.room_id+', "status": "OFF"}';
                 console.log(payload)
                 request.send(payload)
                 

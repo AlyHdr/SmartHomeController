@@ -59,6 +59,11 @@ public class MainActivity extends FragmentActivity implements RoomContextStateLi
     }
 
     @Override
+    public void updateLight(Light light) {
+        ((RoomFragment)currentFragment).updateLight(light);
+    }
+
+    @Override
     protected void onDestroy() {
         MqttAndroidClient client =httpManager.getMqttConnection().getAndroidClient();
         client.unregisterResources();
